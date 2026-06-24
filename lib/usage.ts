@@ -57,14 +57,35 @@ export async function checkAndIncrementUsage(
   if (used >= limit) return { allowed: false, used, limit }
 
   if (existing) {
-    await supabase
+    // Atomic conditional increment — only updates if still under limit
+    const { data: updated, error } = await supabase
       .from('daily_usage')
-      .update({ check_count: used + 1 })
+      .update({ check_count: existing.check_count + 1 })
       .eq('id', existing.id)
+      .lt('check_count', limit)  // only update if still under limit
+      .select('check_count')
+      .single()
+
+    if (error || !updated) {
+      // Another concurrent request beat us to the last slot
+      return { allowed: false, used: limit, limit }
+    }
   } else {
-    await supabase
-      .from('daily_usage')
-      .insert({ ...matchKey, check_count: 1 })
+    try {
+      await supabase
+        .from('daily_usage')
+        .insert({ ...matchKey, check_count: 1 })
+    } catch {
+      // Concurrent insert — re-read and check
+      const { data: retry } = await supabase
+        .from('daily_usage')
+        .select('check_count')
+        .match(matchKey)
+        .single()
+      if ((retry?.check_count ?? 0) >= limit) {
+        return { allowed: false, used: retry?.check_count ?? limit, limit }
+      }
+    }
   }
 
   return { allowed: true, used: used + 1, limit }

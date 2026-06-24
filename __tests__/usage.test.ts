@@ -64,19 +64,23 @@ describe('checkAndIncrementUsage', () => {
   })
 
   it('increments count and allows free user with 2 checks used', async () => {
-    const mockUpdate = jest.fn().mockReturnThis()
-    const mockEq = jest.fn().mockResolvedValue({ error: null })
-    const mockSelect = jest.fn().mockReturnThis()
-    const mockMatch = jest.fn().mockReturnThis()
-    const mockSingle = jest.fn().mockResolvedValue({
+    // Chainable builder for the atomic update path: .update().eq().lt().select().single()
+    const updateSingle = jest.fn().mockResolvedValue({ data: { check_count: 3 }, error: null })
+    const updateSelect = jest.fn().mockReturnValue({ single: updateSingle })
+    const updateLt = jest.fn().mockReturnValue({ select: updateSelect })
+    const updateEq = jest.fn().mockReturnValue({ lt: updateLt })
+    const mockUpdate = jest.fn().mockReturnValue({ eq: updateEq })
+
+    // Chainable builder for the initial read path: .select().match().single()
+    const readSingle = jest.fn().mockResolvedValue({
       data: { id: 'row-1', check_count: 2 }
     })
+    const mockMatch = jest.fn().mockReturnValue({ single: readSingle })
+    const mockSelect = jest.fn().mockReturnValue({ match: mockMatch })
+
     mockFrom.mockReturnValue({
       select: mockSelect,
-      match: mockMatch,
-      single: mockSingle,
       update: mockUpdate,
-      eq: mockEq
     })
 
     const result = await checkAndIncrementUsage('user-1', 'fp-1', 'free')

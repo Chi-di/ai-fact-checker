@@ -11,7 +11,25 @@ function truncateToWords(text: string, max: number): string {
   return words.length <= max ? text : words.slice(0, max).join(' ')
 }
 
+const PRIVATE_IP_PATTERNS = [
+  /^localhost$/i,
+  /^127\./,
+  /^10\./,
+  /^172\.(1[6-9]|2\d|3[01])\./,
+  /^192\.168\./,
+  /^169\.254\./,  // link-local / AWS metadata
+  /^::1$/,        // IPv6 loopback
+  /^fc00:/i,      // IPv6 private
+  /^fe80:/i,      // IPv6 link-local
+]
+
+function isPrivateHost(hostname: string): boolean {
+  return PRIVATE_IP_PATTERNS.some(p => p.test(hostname))
+}
+
 export async function fetchUrlContent(url: string): Promise<string> {
+  const { hostname } = new URL(url)
+  if (isPrivateHost(hostname)) throw new Error('URL resolves to a private host')
   const response = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; FactChecker/1.0)' }
   })
