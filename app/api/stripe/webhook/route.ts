@@ -1,7 +1,7 @@
 // app/api/stripe/webhook/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!)
+    event = getStripe().webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!)
   } catch {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
         if (!userId || !subscriptionId) break
 
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+        const subscription = await getStripe().subscriptions.retrieve(subscriptionId)
         const plan = (subscription.metadata.plan as 'pro' | 'team') ?? 'pro'
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const periodEnd = (subscription as any).current_period_end as number | undefined

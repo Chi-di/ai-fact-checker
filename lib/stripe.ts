@@ -1,7 +1,12 @@
 // lib/stripe.ts
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+let _stripe: Stripe | null = null
+
+export function getStripe(): Stripe {
+  if (!_stripe) _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+  return _stripe
+}
 
 // Server-side price→plan map — client cannot override this
 const PRICE_PLAN_MAP: Record<string, 'pro' | 'team'> = {
@@ -21,7 +26,7 @@ export async function createCheckoutSession(
   const plan = planFromPriceId(priceId)
   if (!plan) throw new Error(`Unknown priceId: ${priceId}`)
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
     customer_email: userEmail,

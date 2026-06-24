@@ -1,5 +1,7 @@
 // app/api/check/route.ts
 import { NextRequest, NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { runCheck } from '@/lib/pipeline'
 import { checkAndIncrementUsage, getFingerprint } from '@/lib/usage'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
