@@ -2,6 +2,8 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import PricingCards from '@/components/PricingCards'
 
+export const dynamic = 'force-dynamic'
+
 const HOW_IT_WORKS = [
   { num: '01', title: 'Paste or URL', body: 'Drop in any AI-generated text or paste a URL to an article you want to verify.' },
   { num: '02', title: 'We Extract Claims', body: 'Claude identifies every hard factual assertion — dates, statistics, attributions, events.' },

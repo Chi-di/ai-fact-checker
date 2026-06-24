@@ -1,6 +1,8 @@
 import Nav from '@/components/Nav'
 import PricingCards from '@/components/PricingCards'
 
+export const dynamic = 'force-dynamic'
+
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-ink">

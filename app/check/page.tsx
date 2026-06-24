@@ -2,6 +2,8 @@
 import { createClient } from '@/lib/supabase/server'
 import CheckPageClient from './CheckPageClient'
 
+export const dynamic = 'force-dynamic'
+
 export default async function CheckPage() {
   const supabase = await createClient()
   const {
