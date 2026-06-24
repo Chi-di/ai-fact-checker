@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+
+  /* Intelligence Briefing design tokens */
+  --color-ink: #0a0b0e;
+  --color-surface: #111318;
+  --color-rim: #1e2130;
+  --color-snow: #f0f2f8;
+  --color-muted: #6b7490;
+  --color-amber: #f5a623;
+  --color-ember: #e8472a;
+
+  /* Blink animation for cursor */
+  --animate-blink: blink 1s step-end infinite;
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  --animate-typing: typing 1.2s steps(40, end);
+  --animate-slide-up: slide-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.4s ease-out;
+}
+
+@keyframes typing { from { width: 0 } to { width: 100% } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
