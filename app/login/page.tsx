@@ -28,20 +28,18 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
 
         {/* Logo */}
-        <div className="mb-8 text-center">
-          <span className="font-[family-name:var(--font-display)] text-snow text-2xl italic">FactCheck</span>
-          <span className="font-[family-name:var(--font-mono)] text-amber text-sm ml-1">
-            [AI]<span className="animate-blink">_</span>
-          </span>
+        <div className="mb-8 text-center flex items-center justify-center gap-2">
+          <span className="w-7 h-7 bg-amber rounded-lg flex items-center justify-center text-snow text-sm font-bold">✦</span>
+          <span className="font-[family-name:var(--font-display)] text-snow text-2xl font-bold tracking-tight">kerfuffle</span>
         </div>
 
         {/* Form card */}
-        <div className="bg-surface border border-rim p-8">
-          {/* Amber top accent */}
-          <div className="h-px bg-amber mb-6" />
+        <div className="bg-surface border border-rim p-8 rounded-xl">
+          {/* Violet top accent */}
+          <div className="h-px bg-amber mb-6 rounded-full" />
 
           <h1 className="font-[family-name:var(--font-mono)] text-xs text-muted tracking-[0.2em] uppercase mb-6">
-            Access Terminal
+            Sign in
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-5">

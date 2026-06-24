@@ -1,4 +1,3 @@
-// app/check/CheckPageClient.tsx
 'use client'
 import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -13,8 +12,20 @@ import { CheckResult } from '@/lib/types'
 const LOADING_STEPS = [
   'Extracting factual claims…',
   'Searching the web for each claim…',
-  'Judging results…',
+  'Judging the receipts…',
 ]
+
+const VERDICT_LABEL = {
+  confirmed: 'Legit',
+  uncertain: 'Fuzzy',
+  contradicted: 'Wrong',
+} as const
+
+const VERDICT_COLORS = {
+  confirmed:    { border: 'border-pine',      text: 'text-pine',      pill: 'bg-pine/15 text-pine' },
+  uncertain:    { border: 'border-uncertain', text: 'text-uncertain', pill: 'bg-uncertain/15 text-uncertain' },
+  contradicted: { border: 'border-ember',     text: 'text-ember',     pill: 'bg-ember/15 text-ember' },
+}
 
 interface CheckPageClientProps {
   userEmail: string | null
@@ -78,7 +89,7 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
     if (!result) return
     const lines = result.verdicts.map(v => {
       const claim = result.claims[v.claimIndex]
-      return `[${v.verdict.toUpperCase()}] "${claim?.text}" — ${v.explanation}`
+      return `[${VERDICT_LABEL[v.verdict]}] "${claim?.text}" — ${v.explanation}`
     })
     navigator.clipboard.writeText(lines.join('\n'))
   }
@@ -88,17 +99,20 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
       <Nav userEmail={userEmail} />
       <main className="max-w-4xl mx-auto px-6 py-12 space-y-6">
         {searchParams.get('upgraded') === 'true' && (
-          <div className="bg-green-900/30 border border-green-700 text-green-300 text-sm px-4 py-3 rounded-xl">
-            You are now on Pro. Enjoy 200 checks per month.
+          <div className="bg-pine/10 border border-pine/40 text-pine font-[family-name:var(--font-mono)] text-xs px-4 py-3 rounded-xl">
+            ✓ You are now on Pro. Enjoy 200 checks per month.
           </div>
         )}
 
         <div className="mb-8">
-          <h1 className="font-[family-name:var(--font-display)] text-snow text-3xl italic mb-2">
-            Verify AI Content
+          <div className="font-[family-name:var(--font-mono)] text-[10px] text-violet tracking-wide mb-3">
+            // kerfuffle scan
+          </div>
+          <h1 className="font-[family-name:var(--font-display)] text-snow text-3xl font-bold mb-2 tracking-tight">
+            Check your AI
           </h1>
           <p className="font-[family-name:var(--font-mono)] text-muted text-xs tracking-wide">
-            Paste text or enter a URL to check for hallucinations
+            Paste text or enter a URL — we&apos;ll find every kerfuffle
           </p>
         </div>
 
@@ -121,13 +135,13 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
         )}
 
         {error && (
-          <div className="text-sm text-red-400 bg-red-900/20 border border-red-800 px-4 py-3 rounded-xl">
+          <div className="font-[family-name:var(--font-mono)] text-xs text-ember bg-ember/10 border border-ember/30 px-4 py-3 rounded-xl">
             {error}
           </div>
         )}
 
         {result && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-fade-in">
             <SummaryBar verdicts={result.verdicts} onCopyReport={copyReport} />
             {currentInputType === 'text' && (
               <div className="border border-rim rounded-xl p-6 bg-surface">
@@ -139,15 +153,15 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
               </div>
             )}
             {currentInputType === 'url' && (
-              <div className="mt-6 space-y-3 animate-fade-in">
+              <div className="mt-6 space-y-3">
                 {result.verdicts.map((v, i) => {
                   const claim = result.claims[v.claimIndex]
-                  const colorClass = v.verdict === 'confirmed' ? 'border-pine text-pine' : v.verdict === 'contradicted' ? 'border-ember text-ember' : 'border-amber text-amber'
+                  const colors = VERDICT_COLORS[v.verdict]
                   return (
-                    <div key={i} className={`border-l-2 pl-4 py-2 ${colorClass.split(' ')[0]}`}>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`font-[family-name:var(--font-mono)] text-[10px] tracking-widest uppercase ${colorClass.split(' ')[1]}`}>
-                          {v.verdict}
+                    <div key={i} className={`border-l-2 pl-4 py-2 ${colors.border}`}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className={`font-[family-name:var(--font-mono)] text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full ${colors.pill}`}>
+                          {VERDICT_LABEL[v.verdict]}
                         </span>
                       </div>
                       <p className="font-[family-name:var(--font-mono)] text-xs text-snow leading-relaxed">{claim?.text}</p>
@@ -156,7 +170,7 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
                         <div className="flex flex-wrap gap-2 mt-2">
                           {v.sources.slice(0, 3).map(s => (
                             <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer"
-                              className="font-[family-name:var(--font-mono)] text-[10px] text-muted hover:text-amber transition-colors underline-offset-2 underline">
+                              className="font-[family-name:var(--font-mono)] text-[10px] text-violet hover:text-snow transition-colors underline-offset-2 underline">
                               {s.title}
                             </a>
                           ))}
@@ -176,7 +190,6 @@ function CheckPageInner({ userEmail, plan, initialUsed }: CheckPageClientProps) 
   )
 }
 
-// useSearchParams requires Suspense boundary in Next.js App Router
 export default function CheckPageClient(props: CheckPageClientProps) {
   return (
     <Suspense fallback={null}>

@@ -1,4 +1,3 @@
-// components/HighlightedText.tsx
 'use client'
 import { useState } from 'react'
 import { Claim, ClaimVerdict, Verdict } from '@/lib/types'
@@ -40,9 +39,9 @@ function buildSegments(text: string, claims: Claim[], verdicts: ClaimVerdict[]):
 }
 
 const MARK_CLASSES: Record<Verdict, string> = {
-  confirmed:    'bg-green-100 border-b-2 border-green-400',
-  uncertain:    'bg-yellow-100 border-b-2 border-yellow-400',
-  contradicted: 'bg-red-100 border-b-2 border-red-500'
+  confirmed:    'bg-pine/10 border-b-2 border-pine',
+  uncertain:    'bg-uncertain/10 border-b-2 border-uncertain',
+  contradicted: 'bg-ember/10 border-b-2 border-ember',
 }
 
 interface HighlightedTextProps {
@@ -58,18 +57,19 @@ export default function HighlightedText({ text, claims, verdicts }: HighlightedT
 
   return (
     <div
-      className="text-gray-800 leading-relaxed whitespace-pre-wrap text-base"
+      className="text-snow leading-relaxed whitespace-pre-wrap text-sm font-[family-name:var(--font-mono)]"
       onClick={() => setActiveIndex(null)}
     >
       {segments.map((seg, i) => {
         if (seg.claimIndex === undefined || !seg.verdict) {
-          return <span key={i}>{seg.text}</span>
+          return <span key={i} className="text-snow/70">{seg.text}</span>
         }
         const claimVerdict = verdictMap.get(seg.claimIndex)
         return (
           <span key={i} className="relative">
             <mark
-              className={`${MARK_CLASSES[seg.verdict]} cursor-pointer rounded-sm px-0.5`}
+              className={`${MARK_CLASSES[seg.verdict]} cursor-pointer px-0.5 text-snow bg-transparent`}
+              style={{ backgroundColor: 'transparent' }}
               onClick={e => {
                 e.stopPropagation()
                 setActiveIndex(activeIndex === seg.claimIndex ? null : seg.claimIndex!)

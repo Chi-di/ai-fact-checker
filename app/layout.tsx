@@ -1,22 +1,23 @@
 import type { Metadata } from 'next'
-import { Fraunces, Geist_Mono } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const fraunces = Fraunces({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-display',
-  axes: ['opsz', 'SOFT', 'WONK'],
+  variable: '--font-grotesk',
+  weight: ['300', '400', '500', '600', '700'],
 })
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
   subsets: ['latin'],
+  weight: ['400', '500', '700'],
 })
 
 export const metadata: Metadata = {
-  title: 'FactCheckAI — Verify AI-generated content instantly',
+  title: 'kerfuffle — AI said what?',
   description:
-    'Paste AI-generated text or a URL and instantly see which claims are confirmed, uncertain, or contradicted — with real source citations.',
+    'Paste AI-generated text or a URL and instantly see which claims are legit, fuzzy, or just plain wrong — with real source citations.',
 }
 
 export default function RootLayout({
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${geistMono.variable} bg-ink text-snow antialiased`}
+        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} bg-ink text-snow antialiased`}
       >
         {children}
       </body>

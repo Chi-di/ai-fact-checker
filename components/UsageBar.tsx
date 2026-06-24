@@ -1,4 +1,3 @@
-// components/UsageBar.tsx
 interface UsageBarProps {
   used: number
   limit: number | null
@@ -13,18 +12,16 @@ export default function UsageBar({ used, limit, plan }: UsageBarProps) {
   const period = isDaily ? 'today' : 'this month'
 
   return (
-    <div className={`text-sm px-3 py-2 rounded-lg ${
+    <div className={`font-[family-name:var(--font-mono)] text-[11px] tracking-wide px-4 py-2.5 rounded-lg border ${
       remaining === 0
-        ? 'bg-red-50 text-red-700'
+        ? 'bg-ember/10 text-ember border-ember/30'
         : remaining <= 1
-        ? 'bg-yellow-50 text-yellow-700'
-        : 'bg-gray-50 text-gray-600'
+        ? 'bg-uncertain/10 text-uncertain border-uncertain/30'
+        : 'bg-surface text-muted border-rim'
     }`}>
-      <span className="font-[family-name:var(--font-mono)] text-[11px] tracking-wide">
-        {remaining === 0
-          ? `You've used all ${limit} free checks ${period}.`
-          : `${remaining} of ${limit} checks remaining ${period}.`}
-      </span>
+      {remaining === 0
+        ? `You've used all ${limit} free checks ${period}. Upgrade to keep going.`
+        : `${remaining} of ${limit} checks remaining ${period}.`}
     </div>
   )
 }

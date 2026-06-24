@@ -1,4 +1,3 @@
-// components/PricingModal.tsx
 'use client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -19,25 +18,29 @@ export default function PricingModal({ onClose }: PricingModalProps) {
   }, [onClose])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/80 backdrop-blur-sm px-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center"
+        className="bg-surface border border-amber rounded-xl shadow-[0_0_60px_rgba(124,58,237,0.25)] p-8 max-w-sm w-full text-center"
         onClick={e => e.stopPropagation()}
       >
-        <div className="text-4xl mb-4">🚫</div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">You&apos;ve hit your daily limit</h2>
-        <p className="text-gray-500 text-sm mb-6">
-          Free accounts get 3 checks per day. Upgrade to Pro for 200 checks per month.
+        <div className="w-10 h-10 bg-ember/15 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span className="text-ember text-lg font-bold">!</span>
+        </div>
+        <h2 className="font-[family-name:var(--font-display)] text-snow text-xl font-bold mb-2">
+          Daily limit reached
+        </h2>
+        <p className="font-[family-name:var(--font-mono)] text-muted text-xs mb-6 leading-relaxed">
+          Free accounts get 3 checks per day. Upgrade to Pro for 200 checks per month — that&apos;s a lot of kerfuffles.
         </p>
         <button
           onClick={() => { onClose(); router.push('/pricing') }}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors mb-3"
+          className="w-full bg-amber hover:bg-violet text-snow font-[family-name:var(--font-display)] font-semibold py-3 rounded-lg text-sm transition-colors mb-3"
         >
           Upgrade to Pro — $15/month
         </button>
         <button
           onClick={onClose}
-          className="w-full text-sm text-gray-500 hover:text-gray-700"
+          className="font-[family-name:var(--font-mono)] w-full text-xs text-muted hover:text-snow transition-colors"
         >
           Maybe later
         </button>

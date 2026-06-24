@@ -1,9 +1,6 @@
-// components/PricingCards.tsx
 'use client'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-// NOTE: do NOT import from lib/stripe here — it's server-only (STRIPE_SECRET_KEY).
-// Checkout is handled via /api/stripe/checkout.
 
 const PLANS = [
   {
@@ -60,37 +57,40 @@ export default function PricingCards() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {PLANS.map(plan => (
         <div
           key={plan.name}
-          className={`rounded-2xl border p-6 flex flex-col ${
+          className={`relative border p-6 flex flex-col rounded-xl ${
             plan.highlight
-              ? 'border-indigo-500 bg-indigo-50 shadow-md'
-              : 'border-gray-200 bg-white'
+              ? 'border-amber bg-surface shadow-[0_0_40px_rgba(124,58,237,0.15)]'
+              : 'border-rim bg-surface'
           }`}
         >
           {plan.highlight && (
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-3">Most popular</span>
+            <span className="font-[family-name:var(--font-mono)] text-[9px] text-amber uppercase tracking-[0.18em] mb-4 block">
+              ✦ Most popular
+            </span>
           )}
-          <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-          <div className="mt-2 mb-6">
-            <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-            <span className="text-gray-500 text-sm">{plan.period}</span>
+          <h3 className="font-[family-name:var(--font-display)] text-snow text-xl font-bold mb-1">{plan.name}</h3>
+          <div className="mt-1 mb-6 flex items-baseline gap-1">
+            <span className="font-[family-name:var(--font-display)] text-snow text-4xl font-bold">{plan.price}</span>
+            <span className="font-[family-name:var(--font-mono)] text-muted text-xs">{plan.period}</span>
           </div>
-          <ul className="space-y-2 mb-8 flex-1">
+          <ul className="space-y-2.5 mb-8 flex-1">
             {plan.features.map(f => (
-              <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-500">✓</span> {f}
+              <li key={f} className="flex items-center gap-2.5">
+                <span className="font-[family-name:var(--font-mono)] text-pine text-xs">✓</span>
+                <span className="font-[family-name:var(--font-mono)] text-sm text-snow/80">{f}</span>
               </li>
             ))}
           </ul>
           <button
             onClick={() => handlePlanClick(plan.priceId, plan.plan)}
-            className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${
+            className={`w-full py-3 font-[family-name:var(--font-display)] font-semibold text-sm rounded-lg transition-colors ${
               plan.highlight
-                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                ? 'bg-amber text-snow hover:bg-violet'
+                : 'bg-card text-muted border border-rim hover:border-amber hover:text-snow'
             }`}
           >
             {plan.cta}

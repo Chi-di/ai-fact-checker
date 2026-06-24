@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0D0618;
+  --foreground: #F0EEFF;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-display);
+  --font-sans: var(--font-grotesk);
+  --font-display: var(--font-grotesk);
+  --font-mono: var(--font-mono);
 
-  /* Intelligence Briefing design tokens */
-  --color-ink: #0a0b0e;
-  --color-surface: #111318;
-  --color-rim: #1e2130;
-  --color-snow: #f0f2f8;
-  --color-muted: #6b7490;
-  --color-amber: #f5a623;
-  --color-ember: #e8472a;
+  /* COMMOTION design tokens */
+  --color-ink: #0D0618;
+  --color-surface: #160D2B;
+  --color-card: #1E1236;
+  --color-rim: #2D1F4A;
+  --color-snow: #F0EEFF;
+  --color-muted: #7A6E9A;
+  --color-amber: #7C3AED;       /* violet — primary brand accent */
+  --color-violet: #A78BFA;      /* lighter violet */
+  --color-pine: #00C97A;        /* confirmed / legit */
+  --color-uncertain: #F59E0B;   /* uncertain / fuzzy */
+  --color-ember: #FF4D6A;       /* contradicted / wrong */
 
   /* Blink animation for cursor */
   --animate-blink: blink 1s step-end infinite;
@@ -32,21 +36,16 @@
   --animate-typing: typing 1.2s steps(40, end);
   --animate-slide-up: slide-up 0.2s ease-out;
   --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-spin-slow: spin-slow 4s linear infinite;
 }
 
 @keyframes typing { from { width: 0 } to { width: 100% } }
 @keyframes slide-up { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
 @keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@keyframes spin-slow { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-grotesk), 'Space Grotesk', sans-serif;
 }
