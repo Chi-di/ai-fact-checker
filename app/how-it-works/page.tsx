@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav'
 import Link from 'next/link'
 import { ClipboardPaste, ScanSearch, Globe, ListChecks } from 'lucide-react'
+import VideoBackground from '@/components/VideoBackground'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,7 +42,9 @@ const STEPS = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-[#0c1a38]">
+    <div className="relative min-h-screen overflow-hidden">
+      <VideoBackground />
+      <div className="relative z-10">
       <Nav />
 
       <main className="max-w-6xl mx-auto px-6 pt-20 pb-24">
@@ -114,6 +117,7 @@ export default function HowItWorksPage() {
         </div>
 
       </main>
+      </div>
     </div>
   )
 }
