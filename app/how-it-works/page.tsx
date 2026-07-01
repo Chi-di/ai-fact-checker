@@ -41,7 +41,7 @@ const STEPS = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-ink">
+    <div className="min-h-screen bg-[#0c1a38]">
       <Nav />
 
       <main className="max-w-6xl mx-auto px-6 pt-20 pb-24">

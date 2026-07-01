@@ -1,3 +1,4 @@
+// components/Nav.tsx
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -9,41 +10,53 @@ interface NavProps {
 
 export default function Nav({ userEmail }: NavProps) {
   const router = useRouter()
+  const supabase = createClient()
 
   async function handleSignOut() {
-    const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/')
     router.refresh()
   }
 
   return (
-    <nav className="border-b border-rim bg-ink/80 backdrop-blur-sm">
-      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="w-6 h-6 bg-amber rounded flex items-center justify-center text-snow text-xs font-bold animate-spin-slow inline-flex shrink-0">✦</span>
-          <span className="font-[family-name:var(--font-display)] text-snow text-lg font-bold tracking-tight">kerfuffle</span>
+    <nav className="w-full">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-3 items-center">
+
+        {/* Logo — left */}
+        <Link href="/" className="font-[family-name:var(--font-serif)] text-snow text-3xl tracking-tight hover:opacity-80 transition-opacity">
+          kerfuffle<sup className="text-xs">®</sup>
         </Link>
-        <div className="flex items-center gap-5">
-          <Link href="/pricing" className="font-[family-name:var(--font-mono)] text-sm text-muted hover:text-snow transition-colors">Pricing</Link>
+
+        {/* Center links */}
+        <div className="hidden md:flex items-center justify-center gap-8">
+          <Link href="/how-it-works" className="text-sm text-muted hover:text-snow transition-colors">
+            How It Works
+          </Link>
+          <Link href="/pricing" className="text-sm text-muted hover:text-snow transition-colors">
+            Pricing
+          </Link>
+        </div>
+
+        {/* Right side */}
+        <div className="flex items-center justify-end gap-4">
           {userEmail ? (
             <>
-              <span className="font-[family-name:var(--font-mono)] text-xs text-muted hidden sm:block">{userEmail}</span>
+              <span className="text-sm text-muted hidden sm:block">{userEmail}</span>
               <button
                 onClick={handleSignOut}
-                className="font-[family-name:var(--font-mono)] text-sm text-muted hover:text-snow transition-colors"
+                className="text-sm text-muted hover:text-snow transition-colors"
               >
                 Sign out
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="font-[family-name:var(--font-mono)] text-sm text-muted hover:text-snow transition-colors">Sign in</Link>
+              <Link href="/login" className="text-sm text-muted hover:text-snow transition-colors">Log in</Link>
               <Link
                 href="/signup"
-                className="font-[family-name:var(--font-mono)] text-sm bg-amber text-snow px-4 py-2 font-semibold rounded-lg transition-colors hover:bg-violet"
+                className="liquid-glass rounded-full px-5 py-2 text-sm text-snow whitespace-nowrap hover:scale-[1.03] transition-transform"
               >
-                Try it free
+                Start free
               </Link>
             </>
           )}
