@@ -80,11 +80,11 @@ export default function HowItWorksPage() {
                     </h2>
 
                     {/* Icon visual */}
-                    <div className={`rounded-xl border p-5 mb-3 flex items-center justify-center flex-1 min-h-0 ${step.accent}`}>
+                    <div className={`rounded-xl border p-5 mb-3 flex items-center justify-center h-28 ${step.accent}`}>
                       <Icon className="w-9 h-9" strokeWidth={1.25} />
                     </div>
 
-                    <p className="text-xs text-muted leading-relaxed">{step.description}</p>
+                    <p className="text-xs text-muted leading-relaxed flex-1">{step.description}</p>
 
                     {/* Tag */}
                     <div className="mt-2 pt-2 border-t border-white/[0.08]">
