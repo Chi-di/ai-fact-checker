@@ -20,7 +20,7 @@ export default function Nav({ userEmail }: NavProps) {
 
   return (
     <nav className="w-full">
-      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-3 items-center">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-3 grid grid-cols-3 items-center">
 
         {/* Logo — left */}
         <Link href="/" className="font-[family-name:var(--font-serif)] text-snow text-3xl tracking-tight hover:opacity-80 transition-opacity">
